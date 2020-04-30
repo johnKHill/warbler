@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from "prop-types";
 
 class AuthForm extends Component {
   constructor(props) {
@@ -14,27 +15,46 @@ class AuthForm extends Component {
   handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
-    })
-  }
+    });
+  };
 
   handleSubmit = e => {
     e.preventDefault();
-    const authType = this.props.signUp ? "signup" : "sign-in";
+    const authType = this.props.signUp ? "signup" : "signin";
+
     this.props.onAuth(authType, this.state).then(() => {
-      console.log("LOGGED IN SUCCESSFULLY!");
-    });
-  }
+        this.props.history.push("/"); // renders HOMEPEPAGE
+      })
+      .catch(() => {
+        return;
+      });
+  };
 
 
   render() {
     const { email, username, password, profileImageUrl } = this.state;
-    const { buttonText, heading, signUp } = this.props;
+    const {
+      signUp,
+      heading,
+      buttonText,
+      errors,
+      history,
+      removeError
+    } = this.props;
+
+    history.listen(() => {
+      removeError();
+    });
+
     return (
       <div>
         <div className="row justify-content-md-center text-center">
           <div className="col-md-6">
             <form onSubmit={this.handleSubmit}>
               <h2>{heading}</h2>
+              {errors.message && (
+                <div className="alert alert-danger">{errors.message}</div>
+              )}
               <label htmlFor="email">Email:</label>
               <input
                 className="form-control"
@@ -51,6 +71,7 @@ class AuthForm extends Component {
                 name="password"
                 onChange={this.handleChange}
                 type="password"
+                value={password}
               />
               {signUp && (
                 <div>
