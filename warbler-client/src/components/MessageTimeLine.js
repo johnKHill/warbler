@@ -1,12 +1,17 @@
 import React from 'react';
 import MessageList from "../containers/MessageList";
+import UserAside from "./UserAside";
 
-const MessageTimeLine = props => {
+const MessageTimeline = props => {
   return (
     <div className="row">
-      <MessageList/>
+      <UserAside
+        profileImageUrl={props.profileImageUrl}
+        username={props.username}
+      />
+      <MessageList />
     </div>
   );
 }
 
-export default MessageTimeLine;
+export default MessageTimeline;

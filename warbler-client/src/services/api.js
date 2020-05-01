@@ -1,5 +1,4 @@
 import axios from "axios";
-import errors from "../store/reducers/errors";
 
 export function setTokenHeader(token) {
   if (token) {
@@ -21,7 +20,7 @@ export function setTokenHeader(token) {
 
 export function apiCall(method, path, data) {
   return new Promise((resolve, reject) => {
-    return axios[method](path, data)
+    return axios[method.toLowerCase()](path, data)
       .then(res => {
         return resolve(res.data);
       })
